@@ -95,7 +95,7 @@ function everything(event) {
 
 console.log('offline after snap'+ offline);
 
-
+console.log('Git borde se det här');
 
 
 
