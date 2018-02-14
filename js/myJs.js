@@ -18,6 +18,13 @@ function everything(event) {
   var offline;
   let data;
   let dataList = [];
+
+  //page
+  let pages;
+  let page = 1;
+  const itemsPerPage = 4;
+
+
   // Movie object to databse
   let movieObject = {
     title: "No name",
@@ -102,50 +109,8 @@ function everything(event) {
       if (a.title > b.title) return 1;
       return 0;
     });
-    //  console.log('list after sort ', dataList);
-    //offline = data;
-    //console.log(offline);
 
-    document.getElementById('movieDisplay').innerHTML = '';
-    for (let z in dataList) {
-      //console.log(dataList[key]);
-      let obj = dataList[z];
-      //console.log(obj.director);
-
-      let div = document.createElement('div');
-      div.id = obj.key;
-      div.className = 'movieItem';
-      div.innerHTML = `
-      <img src=${obj.img} alt="movie image of ${obj.title}" >
-        <div class='item1'>
-          <ul class='ul-movitem'>
-              <li class='li-title'>${obj.title}</li>
-              <li>(${obj.year})</li>
-              <li>Director: ${obj.director}</li>
-              <li>Raiting: ${obj.raiting}/100</li>
-          </ul>
-          <div class='item2'>
-          <button class='changeBtn' type="button" name="button">Change</button>
-          <button class='closeBtn' type="button" name="button">Delete</button>
-          </div>
-        </div> `;
-
-
-      let changeBtn = div.getElementsByTagName('button')[0];
-      let deleteBtn = div.getElementsByTagName('button')[1];
-
-      changeBtn.addEventListener('click', function(event) {
-        let objId = event.target.parentElement.parentElement.parentElement.id
-        //console.log(objId);
-      });
-      deleteBtn.addEventListener('click', function(event) {
-        let objDeleteId = event.target.parentElement.parentElement.parentElement.id
-        //console.log(objDeleteId);
-      });
-
-
-      document.getElementById('movieDisplay').appendChild(div);
-    }
+    print(dataList);
 
   });
 
@@ -230,8 +195,6 @@ function everything(event) {
   });
 
 
-
-
   offline;
 
   document.getElementById('title-a-b').addEventListener('click', function() {
@@ -270,17 +233,19 @@ function everything(event) {
     print(dataList);
   });
 
-function print(data) {
-  document.getElementById('movieDisplay').innerHTML = '';
-  for (let z in data) {
-    //console.log(dataList[key]);
-    let obj = data[z];
-    //console.log(obj.director);
+  function print(data) {
 
-    let div = document.createElement('div');
-    div.id = obj.key;
-    div.className = 'movieItem';
-    div.innerHTML = `
+    let newData = pagination(data);
+    document.getElementById('movieDisplay').innerHTML = '';
+    for (let z in newData) {
+      //console.log(dataList[key]);
+      let obj = newData[z];
+      //console.log(obj.director);
+
+      let div = document.createElement('div');
+      div.id = obj.key;
+      div.className = 'movieItem';
+      div.innerHTML = `
     <img src=${obj.img} alt="movie image of ${obj.title}" >
       <div class='item1'>
         <ul class='ul-movitem'>
@@ -296,23 +261,78 @@ function print(data) {
       </div> `;
 
 
-    let changeBtn = div.getElementsByTagName('button')[0];
-    let deleteBtn = div.getElementsByTagName('button')[1];
+      let changeBtn = div.getElementsByTagName('button')[0];
+      let deleteBtn = div.getElementsByTagName('button')[1];
 
-    changeBtn.addEventListener('click', function(event) {
-      let objId = event.target.parentElement.parentElement.parentElement.id
-      //console.log(objId);
-    });
-    deleteBtn.addEventListener('click', function(event) {
-      let objDeleteId = event.target.parentElement.parentElement.parentElement.id
-      //console.log(objDeleteId);
-    });
+      changeBtn.addEventListener('click', function(event) {
+        let objId = event.target.parentElement.parentElement.parentElement.id
+        console.log(objId);
+      });
+      deleteBtn.addEventListener('click', function(event) {
+        let objDeleteId = event.target.parentElement.parentElement.parentElement.id
+        console.log(objDeleteId);
+      });
 
 
-    document.getElementById('movieDisplay').appendChild(div);
+      document.getElementById('movieDisplay').appendChild(div);
+    }
+
+
+
+
   }
 
-}
+  document.getElementById('next').addEventListener('click',function(event){
+    if (page < pages && page > 0) {
+      // data
+      page += 1;
+      //pagination(data)
+      console.log(page);
+    }else {
+      console.log(page);
+      console.log('didnt work');
+      document.getElementById('next').disabled;
+      document.getElementById('next').style.color = 'gray';
+    }
+  });
+
+  document.getElementById('previous').addEventListener('click',function(event){
+    if (page >= pages || page < pages && page != 1) {
+      page -= 1;
+      console.log(page);
+    }else {
+      console.log(page);
+        console.log('didnt work');
+      document.getElementById('next').disabled;
+      document.getElementById('next').style.color = 'gray';
+    }
+  });
+
+  // Pagination
+
+  function pagination(data) {
+    // Default
+
+    // sid 1: 0 1 2 3
+    //sid 2: 4 5 6 7
+    let slicestart = (page - 1) * itemsPerPage;
+    let slice = data.slice(slicestart, slicestart + itemsPerPage);
+
+    console.log(slice);
+                  //p==1 listitems 0*4=0  - 4
+                  //p==2 1*4=4
+
+
+    pages = Math.ceil(data.length / itemsPerPage);
+    document.getElementById('allPages').innerText = pages;
+    document.getElementById('onPage').innerText = page;
+
+    console.log('slice is', slice);
+    return slice;
+    //Filter alla som har den här nyckeln visas
+
+  }
+
 
 
 

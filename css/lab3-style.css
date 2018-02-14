@@ -210,6 +210,8 @@ main {
 
 .pagination {
   align-self: center;
+  display: flex;
+  align-content: center;
 }
 
 .pagination a {
@@ -219,19 +221,21 @@ main {
   text-decoration: none;
   transition: background-color .3s;
 }
+.pagination p{
 
+}
 /* Style the active/current link */
 
-.pagination a.active {
+/*.pagination a.active {
   background-color: #4CAF50;
   color: white;
-}
+}*/
 
 /* Add a grey background color on mouse-over */
 
-.pagination a:hover:not(.active) {
+/*.pagination a:hover:not(.active) {
   background-color: #ddd;
-}
+}*/
 
 @media screen and (max-width:1038px) {
   #movieDisplay {
