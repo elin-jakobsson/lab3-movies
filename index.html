@@ -12,7 +12,6 @@
   <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
   <script src="js/myJs.js"></script>
 
-
 </head>
 
 <body>
@@ -41,9 +40,9 @@
           <label for="director">Resigör</label>
           <input id="movDirector" type="text" name="director" value="">
           <label for="year">Utgivningsår</label>
-          <input id="movYear" type="text" name="" value="">
+          <input id="movYear" type="number" min='1' max="5000" name="" value="">
           <div class="slidecontainer">
-            <input type="range" min="0" max="100" value="0" class="slider" id="myRange">
+            <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
             <p>Value: <span id="demo"></span></p>
           </div>
           <label for="image">Movie poster <em>Optional</em> </label>
@@ -60,16 +59,21 @@
           <input id="inputSearch" type="text" placeholder="Search.." name="search">
           <button id="searchBtn" type="submit"><i class="fas fa-search fa-2x"></i></button>
         </form>
-        <div class="filter">
-          <button type="button" name="button">Show All</button>
-          <button type="button" name="button">Most Popular</button>
-          <button type="button" name="button">New</button>
-          <button type="button" name="button">Old</button>
+        <div class="sort">
+          <input id="title-a-b" checked="checked" type="radio" name="button">Title A-Ö</input>
+          <input id="title-b-a" type="radio" name="button">Title Ö-A</input>
+          <input id="direct-a-b" type="radio" name="button">Director A-Ö</input>
+          <input id="direct-b-a" type="radio" name="button">Director Ö-A</input>
+          <input id="new" type="radio" name="button">New</input>
+          <input id="old" type="radio" name="button">Old</input>
         </div>
+
         <div id="movieDisplay">
 
 
+
         </div>
+
         <div class="pagination">
           <a href="#">&laquo;</a>
           <a href="#">1</a>

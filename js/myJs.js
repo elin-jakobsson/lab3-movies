@@ -15,15 +15,16 @@ function everything(event) {
   //Firebase conection
   let db = firebase.database();
 
-  var offline = '';
-
+  var offline;
+  let data;
+  let dataList = [];
   // Movie object to databse
   let movieObject = {
     title: "No name",
     director: "No name",
     year: 0000,
     img: "img/movie-logo.jpg",
-    raiting: 0
+    raiting: 50
   }
 
 
@@ -38,13 +39,14 @@ function everything(event) {
 
 
   //SLIDER JS
-  let rating = document.getElementById("myRange");
-  let ratingVal = document.getElementById("demo");
-  ratingVal.innerHTML = rating.value;
+  let raiting = document.getElementById("myRange");
+  let raitingVal = document.getElementById("demo");
+  raitingVal.innerHTML = raiting.value;
 
-  rating.oninput = function() {
-    ratingVal.innerHTML = this.value;
-  }
+  raiting.addEventListener("input", function(event) {
+    raitingVal.innerHTML = this.value;
+
+  });
 
 
   //add a movie to the database
@@ -52,7 +54,7 @@ function everything(event) {
     movieObject.title = titleInput.value.toLowerCase();
     movieObject.director = director.value.toLowerCase();
     movieObject.year = year.value;
-    movieObject.raiting = rating.value;
+    movieObject.raiting = raiting.value;
 
     if (movImg.value.length > 1) {
       movieObject.img = movImg.value;
@@ -67,7 +69,8 @@ function everything(event) {
         director.value = '';
         year.value = '';
         movImg.value = '';
-        rating.value = 0;
+        raiting.value = 50;
+        raitingVal.innerHTML = 50;
       }
     });
   });
@@ -78,29 +81,238 @@ function everything(event) {
     director.value = '';
     year.value = '';
     movImg.value = '';
-    rating.value = 0;
+    raiting.value = 50;
+    raitingVal.innerHTML = 50;
   });
 
-  console.log('offline before snap' + offline);
-  db.ref('/').on('value', function(snapshot) {
-    let data = snapshot.val();
-    //console.log(data);
-    offline = data;
-      console.log(offline);
-    for (let key in data) {
-      console.log(data[key]);
+
+  db.ref('/movies').once('value', function(snapshot) {
+    data = snapshot.val();
+
+    dataList = [];
+    for (let x in data) {
+      //  console.log(x);
+      data[x].key = x;
+      dataList.push(data[x])
+    }
+
+    //console.log('list is ',dataList);
+    dataList.sort(function(a, b) {
+      if (a.title < b.title) return -1;
+      if (a.title > b.title) return 1;
+      return 0;
+    });
+    //  console.log('list after sort ', dataList);
+    //offline = data;
+    //console.log(offline);
+
+    document.getElementById('movieDisplay').innerHTML = '';
+    for (let z in dataList) {
+      //console.log(dataList[key]);
+      let obj = dataList[z];
+      //console.log(obj.director);
+
+      let div = document.createElement('div');
+      div.id = obj.key;
+      div.className = 'movieItem';
+      div.innerHTML = `
+      <img src=${obj.img} alt="movie image of ${obj.title}" >
+        <div class='item1'>
+          <ul class='ul-movitem'>
+              <li class='li-title'>${obj.title}</li>
+              <li>(${obj.year})</li>
+              <li>Director: ${obj.director}</li>
+              <li>Raiting: ${obj.raiting}/100</li>
+          </ul>
+          <div class='item2'>
+          <button class='changeBtn' type="button" name="button">Change</button>
+          <button class='closeBtn' type="button" name="button">Delete</button>
+          </div>
+        </div> `;
+
+
+      let changeBtn = div.getElementsByTagName('button')[0];
+      let deleteBtn = div.getElementsByTagName('button')[1];
+
+      changeBtn.addEventListener('click', function(event) {
+        let objId = event.target.parentElement.parentElement.parentElement.id
+        //console.log(objId);
+      });
+      deleteBtn.addEventListener('click', function(event) {
+        let objDeleteId = event.target.parentElement.parentElement.parentElement.id
+        //console.log(objDeleteId);
+      });
+
+
+      document.getElementById('movieDisplay').appendChild(div);
     }
 
   });
 
-console.log('offline after snap'+ offline);
+  db.ref('/movies').on('child_added', function(snapshot) {
 
-console.log('Git borde se det här');
+    let child = snapshot.val();
+    let key = snapshot.key;
+    child.key = key;
+    dataList.push(child);
+
+    if (document.getElementById('title-a-b').checked) {
+      dataList.sort(function(a, b) {
+        if (a.title < b.title) return -1;
+        if (a.title > b.title) return 1;
+        return 0;
+      });
+    }
+    if (document.getElementById('title-b-a').checked) {
+      dataList.sort(function(a, b) {
+        if (a.title < b.title) return 1;
+        if (a.title > b.title) return -1;
+        return 0;
+      });
+    }
+
+    if (document.getElementById('direct-a-b').checked) {
+      dataList.sort(function(a, b) {
+        if (a.director < b.director) return -1;
+        if (a.director > b.director) return 1;
+        return 0;
+      });
+    }
+    if (document.getElementById('direct-b-a').checked) {
+      dataList.sort(function(a, b) {
+        if (a.director < b.director) return 1;
+        if (a.director > b.director) return -1;
+        return 0;
+      });
+    }
+
+    document.getElementById('movieDisplay').innerHTML = '';
+    for (let z in dataList) {
+      //console.log(dataList[key]);
+      let obj = dataList[z];
+      //console.log(obj.director);
+
+      let div = document.createElement('div');
+      div.id = obj.key;
+      div.className = 'movieItem';
+      div.innerHTML = `
+      <img src=${obj.img} alt="movie image of ${obj.title}" >
+        <div class='item1'>
+          <ul class='ul-movitem'>
+              <li class='li-title'>${obj.title}</li>
+              <li>(${obj.year})</li>
+              <li>Director: ${obj.director}</li>
+              <li>Raiting: ${obj.raiting}/100</li>
+          </ul>
+          <div class='item2'>
+          <button class='changeBtn' type="button" name="button">Change</button>
+          <button class='closeBtn' type="button" name="button">Delete</button>
+          </div>
+        </div> `;
+
+
+      let changeBtn = div.getElementsByTagName('button')[0];
+      let deleteBtn = div.getElementsByTagName('button')[1];
+
+      changeBtn.addEventListener('click', function(event) {
+        let objId = event.target.parentElement.parentElement.parentElement.id
+        //console.log(objId);
+      });
+      deleteBtn.addEventListener('click', function(event) {
+        let objDeleteId = event.target.parentElement.parentElement.parentElement.id
+        //console.log(objDeleteId);
+      });
+
+
+      document.getElementById('movieDisplay').appendChild(div);
+    }
+
+  });
 
 
 
 
+  offline;
 
+  document.getElementById('title-a-b').addEventListener('click', function() {
+    dataList.sort(function(a, b) {
+      if (a.title < b.title) return -1;
+      if (a.title > b.title) return 1;
+      return 0;
+    });
+    print(dataList);
+  });
+
+  document.getElementById('title-b-a').addEventListener('click', function() {
+    dataList.sort(function(a, b) {
+      if (a.title < b.title) return 1;
+      if (a.title > b.title) return -1;
+      return 0;
+    });
+    print(dataList);
+  });
+
+  document.getElementById('direct-a-b').addEventListener('click', function() {
+    dataList.sort(function(a, b) {
+      if (a.director < b.director) return -1;
+      if (a.director > b.director) return 1;
+      return 0;
+    });
+    print(dataList);
+  });
+
+  document.getElementById('direct-b-a').addEventListener('click', function() {
+    dataList.sort(function(a, b) {
+      if (a.director < b.director) return 1;
+      if (a.director > b.director) return -1;
+      return 0;
+    });
+    print(dataList);
+  });
+
+function print(data) {
+  document.getElementById('movieDisplay').innerHTML = '';
+  for (let z in data) {
+    //console.log(dataList[key]);
+    let obj = data[z];
+    //console.log(obj.director);
+
+    let div = document.createElement('div');
+    div.id = obj.key;
+    div.className = 'movieItem';
+    div.innerHTML = `
+    <img src=${obj.img} alt="movie image of ${obj.title}" >
+      <div class='item1'>
+        <ul class='ul-movitem'>
+            <li class='li-title'>${obj.title}</li>
+            <li>(${obj.year})</li>
+            <li>Director: ${obj.director}</li>
+            <li>Raiting: ${obj.raiting}/100</li>
+        </ul>
+        <div class='item2'>
+        <button class='changeBtn' type="button" name="button">Change</button>
+        <button class='closeBtn' type="button" name="button">Delete</button>
+        </div>
+      </div> `;
+
+
+    let changeBtn = div.getElementsByTagName('button')[0];
+    let deleteBtn = div.getElementsByTagName('button')[1];
+
+    changeBtn.addEventListener('click', function(event) {
+      let objId = event.target.parentElement.parentElement.parentElement.id
+      //console.log(objId);
+    });
+    deleteBtn.addEventListener('click', function(event) {
+      let objDeleteId = event.target.parentElement.parentElement.parentElement.id
+      //console.log(objDeleteId);
+    });
+
+
+    document.getElementById('movieDisplay').appendChild(div);
+  }
+
+}
 
 
 
