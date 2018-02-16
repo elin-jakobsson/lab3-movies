@@ -151,46 +151,7 @@ function everything(event) {
       });
     }
 
-    document.getElementById('movieDisplay').innerHTML = '';
-    for (let z in dataList) {
-      //console.log(dataList[key]);
-      let obj = dataList[z];
-      //console.log(obj.director);
-
-      let div = document.createElement('div');
-      div.id = obj.key;
-      div.className = 'movieItem';
-      div.innerHTML = `
-      <img src=${obj.img} alt="movie image of ${obj.title}" >
-        <div class='item1'>
-          <ul class='ul-movitem'>
-              <li class='li-title'>${obj.title}</li>
-              <li>(${obj.year})</li>
-              <li>Director: ${obj.director}</li>
-              <li>Raiting: ${obj.raiting}/100</li>
-          </ul>
-          <div class='item2'>
-          <button class='changeBtn' type="button" name="button">Change</button>
-          <button class='closeBtn' type="button" name="button">Delete</button>
-          </div>
-        </div> `;
-
-
-      let changeBtn = div.getElementsByTagName('button')[0];
-      let deleteBtn = div.getElementsByTagName('button')[1];
-
-      changeBtn.addEventListener('click', function(event) {
-        let objId = event.target.parentElement.parentElement.parentElement.id
-        //console.log(objId);
-      });
-      deleteBtn.addEventListener('click', function(event) {
-        let objDeleteId = event.target.parentElement.parentElement.parentElement.id
-        //console.log(objDeleteId);
-      });
-
-
-      document.getElementById('movieDisplay').appendChild(div);
-    }
+    print(dataList);
 
   });
 
@@ -270,6 +231,8 @@ function everything(event) {
       });
       deleteBtn.addEventListener('click', function(event) {
         let objDeleteId = event.target.parentElement.parentElement.parentElement.id
+        //db.ref('/movies/' + objDeleteId).remove();
+
         console.log(objDeleteId);
       });
 
@@ -288,6 +251,9 @@ function everything(event) {
       page += 1;
       //pagination(data)
       console.log(page);
+      dataList;
+        console.log(dataList);
+        print(dataList);
     }else {
       console.log(page);
       console.log('didnt work');
@@ -300,17 +266,19 @@ function everything(event) {
     if (page >= pages || page < pages && page != 1) {
       page -= 1;
       console.log(page);
+      dataList;
+        console.log(dataList);
+        print(dataList);
     }else {
       console.log(page);
         console.log('didnt work');
-      document.getElementById('next').disabled;
-      document.getElementById('next').style.color = 'gray';
+
     }
   });
 
   // Pagination
-
   function pagination(data) {
+
     // Default
 
     // sid 1: 0 1 2 3
@@ -334,6 +302,44 @@ function everything(event) {
   }
 
 
+  //Search form
+  let search = document.getElementById('inputSearch');
+  //let searchBtn = document.getElementById('searchBtn');
+
+  search.addEventListener('keyup', function(event){
+    searchVal = event.target.value.toLowerCase();
+    dataList;
+    let filterlist;
+    console.log(event.keyCode);
+    if (event.keyCode ===13) {
+      console.log('prevent enter');
+      event.preventDefault();
+    }
+    if (search.value !== '') {
+      page = 1;
+      filterlist = dataList.filter(find);
+      print(filterlist);
+    }else {
+      page = 1;
+      print(dataList);
+    }
+
+  });
+
+
+function find(data) {
+  console.log(search.value);
+
+  if (data.title.includes(search.value,0)) {
+    return data;
+  }
+  if (data.director.includes(search.value,0)) {
+    return data;
+  }
+  if (data.year.includes(search.value,0)) {
+      return data;
+  }
+}
 
 
 
