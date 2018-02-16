@@ -18,11 +18,12 @@ function everything(event) {
   var offline;
   let data;
   let dataList = [];
+  let objDeleteId;
 
   //page
   let pages;
   let page = 1;
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
 
 
   // Movie object to databse
@@ -195,7 +196,7 @@ function everything(event) {
   });
 
   function print(data) {
-
+    data;
     let newData = pagination(data);
     document.getElementById('movieDisplay').innerHTML = '';
     for (let z in newData) {
@@ -227,13 +228,59 @@ function everything(event) {
 
       changeBtn.addEventListener('click', function(event) {
         let objId = event.target.parentElement.parentElement.parentElement.id
+        let divItem = document.getElementById(objId);
+
+        //document.getElementsByClassName('changeMovie')[0].style.display= 'block';
+
+
+        divItem.innerHTML = `<form class='changeInput'>
+        <label for="title">Title</label>
+        <input type="text" name="title" value="">
+        <label for="direct">Director</label>
+        <input type="text" name="direct" value="">
+        <label for="year">Year</label>
+        <input id="movYear" type="number" min='1' max="5000" name="" value="">
+        <div class="slidecontainerTwo">
+          <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
+          <p>Value: <span id="demo"></span></p>
+        </div>
+        <label for="image">Movie poster <em>Optional</em> </label>
+        <input id="movSrc" type="text" name="" value="">
+        </form>
+        <div class="saveDiv">
+          <button  type="button" name="button">Go back</button>
+          <button  type="button" name="button">Add</button>
+        </div>
+        `
+        let goBackBtn = div.getElementsByTagName('button')[0];
+        let saveBtn = div.getElementsByTagName('button')[1];
+
+        goBackBtn.addEventListener('click', function(event){
+          console.log(event.target.parentElement.parentElement.id);
+        });
+        saveBtn.addEventListener('click', function(event){
+          console.log(event.target.parentElement.parentElement.id);
+        });
+
+
         console.log(objId);
       });
-      deleteBtn.addEventListener('click', function(event) {
-        let objDeleteId = event.target.parentElement.parentElement.parentElement.id
-        //db.ref('/movies/' + objDeleteId).remove();
 
-        console.log(objDeleteId);
+
+      deleteBtn.addEventListener('click', function(event) {
+        objDeleteId = event.target.parentElement.parentElement.parentElement.id
+        data;
+        let itemRemoved;
+
+        itemRemoved = data.filter(function(el) {
+          return el.key !== objDeleteId;
+        });
+
+        data = itemRemoved;
+        print(data);
+
+        db.ref('/movies/' + objDeleteId).remove();
+
       });
 
 
@@ -245,33 +292,39 @@ function everything(event) {
 
   }
 
-  document.getElementById('next').addEventListener('click',function(event){
+  /*function findSpecific(data) {
+    if (data.key.includes(objDeleteId, 0)) {
+      return data;
+    }
+  }*/
+
+  document.getElementById('next').addEventListener('click', function(event) {
     if (page < pages && page > 0) {
       // data
       page += 1;
       //pagination(data)
-      console.log(page);
+      //console.log(page);
       dataList;
-        console.log(dataList);
-        print(dataList);
-    }else {
-      console.log(page);
-      console.log('didnt work');
+      //  console.log(dataList);
+      print(dataList);
+    } else {
+      //console.log(page);
+      //console.log('didnt work');
       document.getElementById('next').disabled;
       document.getElementById('next').style.color = 'gray';
     }
   });
 
-  document.getElementById('previous').addEventListener('click',function(event){
+  document.getElementById('previous').addEventListener('click', function(event) {
     if (page >= pages || page < pages && page != 1) {
       page -= 1;
-      console.log(page);
+      //console.log(page);
       dataList;
-        console.log(dataList);
-        print(dataList);
-    }else {
-      console.log(page);
-        console.log('didnt work');
+      //  console.log(dataList);
+      print(dataList);
+    } else {
+      //console.log(page);
+      //  console.log('didnt work');
 
     }
   });
@@ -286,16 +339,15 @@ function everything(event) {
     let slicestart = (page - 1) * itemsPerPage;
     let slice = data.slice(slicestart, slicestart + itemsPerPage);
 
-    console.log(slice);
-                  //p==1 listitems 0*4=0  - 4
-                  //p==2 1*4=4
-
+    //  console.log(slice);
+    //p==1 listitems 0*4=0  - 4
+    //p==2 1*4=4
 
     pages = Math.ceil(data.length / itemsPerPage);
     document.getElementById('allPages').innerText = pages;
     document.getElementById('onPage').innerText = page;
 
-    console.log('slice is', slice);
+    //console.log('slice is', slice);
     return slice;
     //Filter alla som har den här nyckeln visas
 
@@ -306,40 +358,42 @@ function everything(event) {
   let search = document.getElementById('inputSearch');
   //let searchBtn = document.getElementById('searchBtn');
 
-  search.addEventListener('keyup', function(event){
+  search.addEventListener('keyup', function(event) {
     searchVal = event.target.value.toLowerCase();
     dataList;
     let filterlist;
-    console.log(event.keyCode);
-    if (event.keyCode ===13) {
-      console.log('prevent enter');
-      event.preventDefault();
-    }
+
     if (search.value !== '') {
       page = 1;
       filterlist = dataList.filter(find);
       print(filterlist);
-    }else {
+    } else {
       page = 1;
       print(dataList);
     }
-
+  });
+  // Prevent enter submit in filter
+  search.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+      //  console.log('prevent enter');
+      event.preventDefault();
+    }
   });
 
 
-function find(data) {
-  console.log(search.value);
+  function find(data) {
+    //  console.log(search.value);
 
-  if (data.title.includes(search.value,0)) {
-    return data;
-  }
-  if (data.director.includes(search.value,0)) {
-    return data;
-  }
-  if (data.year.includes(search.value,0)) {
+    if (data.title.includes(search.value, 0)) {
       return data;
+    }
+    if (data.director.includes(search.value, 0)) {
+      return data;
+    }
+    if (data.year.includes(search.value, 0)) {
+      return data;
+    }
   }
-}
 
 
 

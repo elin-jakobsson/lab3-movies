@@ -18,71 +18,77 @@
   <header>
     <nav class="navbar">
       <ul class="ulNav">
-        <!--<li> <img id="TMDb" src="img/293x302-powered-by-square-green-logo.png" alt="The Movie Database"> </li>-->
-        <li>Project description </li>
-        <li>About us</li>
+        <li class="liImg"> <img src="img/Film-Camera-Logo-1.png" alt="movie logo"> </li>
+        <li class="liSearch"><form class="searchForm">
+          <input id="inputSearch" type="text" placeholder="Search.." name="search">
+          <p id="searchBtn"><i class="fas fa-search fa-2x" data-fa-transform=" up-1.5"></i></p>
+        </form>
+      </li>
       </ul>
     </nav>
-
   </header>
 
   <main>
 
     <div class="main-container">
 
-      <div class="addMovie">
-        <div class="addLabel">
-          <h3>Add Movie</h3>
-        </div>
-        <form class="sendForm">
-          <label for="titel">Titel</label>
-          <input id="movTitle" type="text" name="titel" value="">
-          <label for="director">Resigör</label>
-          <input id="movDirector" type="text" name="director" value="">
-          <label for="year">Utgivningsår</label>
-          <input id="movYear" type="number" min='1' max="5000" name="" value="">
-          <div class="slidecontainer">
-            <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
-            <p>Value: <span id="demo"></span></p>
+      <div class="add-sort">
+        <div class="addMovie">
+          <div class="addLabel">
+            <h3>Add Movie</h3>
           </div>
-          <label for="image">Movie poster <em>Optional</em> </label>
-          <input id="movSrc" type="text" name="" value="">
-        </form>
-        <div class="submitDiv">
-          <button id="clear" type="button" name="button">Clear</button>
-          <button id="addBtn" type="button" name="button">Add</button>
+          <form class="sendForm">
+            <label for="titel">Title</label>
+            <input id="movTitle" type="text" name="titel" value="">
+            <label for="director">Director</label>
+            <input id="movDirector" type="text" name="director" value="">
+            <label for="year">Year of premiere</label>
+            <input id="movYear" type="number" min='1' max="5000" name="" value="">
+            <div class="slidecontainer">
+              <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
+              <p>Value: <span id="demo"></span></p>
+            </div>
+            <label for="image">Movie poster <em>Optional</em> </label>
+            <input id="movSrc" type="text" name="" value="">
+          </form>
+          <div class="submitDiv">
+            <button id="clear" type="button" name="button">Clear</button>
+            <button id="addBtn" type="button" name="button">Add</button>
+          </div>
+        </div>
+
+        <div class="sort">
+          <div class="sortLabel">
+            <h3>Sort by:</h3>
+          </div>
+          <label for="title-a-b">Title A-Ö</label>
+          <input id="title-a-b" checked="checked" type="radio" name="sort">
+          <label for="title-b-a">Title Ö-A</label>
+          <input id="title-b-a" type="radio" name="sort">
+        
+          <label for="direct-a-b">Director A-Ö</label>
+          <input id="direct-a-b" type="radio" name="sort" >
+          <label for="direct-b-a">Director Ö-A</label>
+          <input id="direct-b-a" type="radio" name="sort">
+
+          <label for="new">New</label>
+          <input id="new" type="radio" name="sort">
+          <label for="old">Old</label>
+          <input id="old" type="radio" name="sort">
         </div>
       </div>
 
+
       <div class="result">
-        <form class="searchForm">
-          <input id="inputSearch" type="text" placeholder="Search.." name="search">
-          <button id="searchBtn" type="submit"><i class="fas fa-search fa-2x"></i></button>
-        </form>
-        <div class="sort">
-          <input id="title-a-b" checked="checked" type="radio" name="button">Title A-Ö</input>
-          <input id="title-b-a" type="radio" name="button">Title Ö-A</input>
-          <input id="direct-a-b" type="radio" name="button">Director A-Ö</input>
-          <input id="direct-b-a" type="radio" name="button">Director Ö-A</input>
-          <input id="new" type="radio" name="button">New</input>
-          <input id="old" type="radio" name="button">Old</input>
-        </div>
-
         <div id="movieDisplay">
-
 
 
         </div>
 
         <div class="pagination">
           <a id="previous" href="#">&laquo;</a>
-          <p> <span id="onPage">1</span>/<span id="allPages">1</span> </p>
-          <!--<a href="#">1</a>
-          <a class="active" href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#">6</a>-->
+          <p> <span id="onPage">1</span> / <span id="allPages">1</span> </p>
+
           <a id="next" href="#">&raquo;</a>
         </div>
       </div>
@@ -93,6 +99,30 @@
     <div id="selectedContent" class="container">
 
     </div>
+
+    <!--<div class="changeMovie">
+      <div class="changeLabel">
+        <h3>Add Movie</h3>
+      </div>
+      <form class="sendForm">
+        <label for="titel">Titel</label>
+        <input id="changeTitle" type="text" name="titel" value="">
+        <label for="director">Resigör</label>
+        <input id="changeDirector" type="text" name="director" value="">
+        <label for="year">Utgivningsår</label>
+        <input id="changeYear" type="number" min='1' max="5000" name="" value="">
+        <div class="slidecontainer">
+          <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
+          <p>Value: <span id="demo"></span></p>
+        </div>
+        <label for="image">Movie poster <em>Optional</em> </label>
+        <input id="movSrc" type="text" name="" value="">
+      </form>
+      <div class="submitDiv">
+        <button id="goBack" type="button" name="button">Go back</button>
+        <button id="changeBtn" type="button" name="button">Save</button>
+      </div>
+    </div>-->
 
   </main>
 

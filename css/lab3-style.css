@@ -11,23 +11,33 @@ body {
 
 header {
   background-color: #333333;
+  z-index: 3;
+  position: fixed;
+  width: 100%
 }
 
-#TMDb {
-  width: 70px;
-}
 
 .ulNav {
+  width: 100%;
   list-style: none;
   padding: 1rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 }
 
 .ulNav>li {
   padding-right: 1.5rem;
   color: #fff;
+}
+.ulNav img{
+  width: 80px;
+}
+.liImg{
+  width: 20%;
+}
+.liSearch{
+  width: 70%;
 }
 
 main {
@@ -36,16 +46,32 @@ main {
 }
 
 .main-container {
-  margin-top: 2rem;
-  width: 90%;
+  margin-top: 6rem;
+  width: 95%;
   display: flex;
   justify-content: space-between;
 }
 
-.addMovie {
+.add-sort{
   width: 25%;
   min-width: 200px;
-  max-height: 400px;
+
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.sort {
+  width: 100%;
+  margin-top: 1rem;
+  background-color: #fff;
+}
+.sort>*{
+  padding: 1rem 0.5rem;
+}
+
+.addMovie {
+
+
   border: 3px solid #01d277;
 }
 
@@ -53,6 +79,13 @@ main {
   background-color: #01d277;
   padding: 10px;
   width: 100%;
+
+}
+.sortLabel {
+  background-color: #01d277;
+  padding: 10px;
+  width: 100%;
+
 }
 
 .sendForm {
@@ -65,6 +98,16 @@ main {
   display: block;
   margin: auto;
 }
+
+/*.changeMovie{
+  z-index: 20;
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+
+}*/
 
 /*Slider*/
 
@@ -111,6 +154,16 @@ main {
   cursor: pointer;
 }
 
+/* Slider 2*/
+.slidecontainerTwo {
+  width: 90%;
+
+}
+
+.slidecontainerTwo>p {
+
+}
+
 /*End of slider*/
 
 .submitDiv {
@@ -127,6 +180,7 @@ main {
 
 .searchForm {
   width: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,28 +189,31 @@ main {
 #inputSearch {
   width: 100%;
   height: 40px;
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0.3rem 0.5rem;
   border: none;
   border-radius: 5px 0 0 5px;
+  font-size: 1.1rem;
+  font-weight: lighter;
 }
 
 #searchBtn {
   height: 40px;
   padding: 0.5rem;
-  background-color: #01d277;
+  background-color: #fff;
   border-radius: 0 5px 5px 0;
   border: none;
-  color: #fff;
+  color:#01d277;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
-.sort{
-  margin: 1rem 0;
-}
 
 #movieDisplay {
-  border: 2px solid red;
-  background-color: #fff;
+
+  background-color: #f4f4f4;
   min-height: 350px;
+
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -165,16 +222,16 @@ main {
 
 .movieItem {
   box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.3);
-  height: 150px;
+  height: 200px;
+
   flex-basis: 45%;
-  margin: 1rem;
+  margin: 0 0 1rem 0;
   display: flex;
   flex-direction: row;
 }
 
 .movieItem>img {
-  width: 100px;
-  height: 150px;
+  width: 130px;
 }
 
 .ul-movitem {
@@ -184,18 +241,27 @@ main {
 .closeBtn {}
 
 .item1 {
-  height: 150px;
+  background-color: #fff;
+  height: 200px;
   width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   justify-content: space-between;
+}
+
+.li-title{
+  font-family: Tahoma, sans-serif;
+  text-transform: capitalize;
+  font-size: 1.1rem;
+  padding-bottom: 0.4rem;
 }
 
 .item2 {
   align-self: baseline;
   width: 100%;
-  background-color: #333333;
   display: flex;
   justify-content: flex-end;
 }
@@ -203,7 +269,28 @@ main {
 .item2>button {
   margin-right: 1rem;
 }
+.changeBtn{
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: gold;
+  transition: 0.4s;
+}
+.changeBtn:hover{
+  background-color: orange;
 
+}
+.closeBtn{
+  border: none;
+  padding:  5px;
+  border-radius: 5px;
+  background-color: red;
+  transition: 0.4s;
+}
+.closeBtn:hover{
+  background-color: pink;
+
+}
 /*Paginering Css*/
 
 /* Pagination links */
@@ -215,15 +302,23 @@ main {
 }
 
 .pagination a {
+  font-size: 1.3rem;
   color: black;
   float: left;
-  padding: 8px 16px;
+  padding: 0 16px;
   text-decoration: none;
-  transition: background-color .3s;
+  transition: 0.3s;
 }
-.pagination p{
+.pagination a:hover {
+  background-color: #01d277;
+  color: #fff;
 
 }
+
+.pagination p {
+  padding: 4px 16px;
+}
+
 /* Style the active/current link */
 
 /*.pagination a.active {
@@ -251,18 +346,21 @@ main {
     flex-direction: column;
     justify-content: space-between;
   }
+  .add-sort{
+    width: 100%;
+  }
   .addMovie {
     width: 100%;
-    margin-top: 2rem;
+
   }
+
   .result {
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 }
 
 @media screen and (max-width:600px) {
-
   .movieItem {
     flex-basis: 100%;
   }
