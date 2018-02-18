@@ -56,6 +56,20 @@ function everything(event) {
 
   });
 
+  // check if year is valid
+  function checkNumberFieldLength(x) {
+    if (x < 0) {
+      x *= -1;
+      let y = x.toString();
+      x = y.slice(0, 4);
+      return x;
+    } else if (x.length > 4) {
+      x = x.slice(0, 4);
+      return x;
+    } else {
+      return x;
+    }
+  }
 
   //add a movie to the database
   addBtn.addEventListener('click', function(event) {
@@ -63,14 +77,16 @@ function everything(event) {
     if (titleInput.value.length > 0 && director.value.length > 0 && year.value.length > 0) {
       movieObject.title = titleInput.value.toLowerCase();
       movieObject.director = director.value.toLowerCase();
-      movieObject.year = year.value;
+
+      let tempYear = year.value;
+      tempYear = checkNumberFieldLength(tempYear);
+      movieObject.year = tempYear;
 
       movieObject.raiting = raiting.value;
-
       if (movImg.value != "") {
         movieObject.img = movImg.value;
-      }else {
-        movieObject.img =  "img/movie-logo.jpg";
+      } else {
+        movieObject.img = "img/movie-logo.jpg";
       }
 
       db.ref('/movies').push(movieObject, function(error) {
@@ -87,8 +103,7 @@ function everything(event) {
         }
       });
     } else {
-      alert('Please add the name of the title, the director and the relase date, before adding to the movie list');
-
+      alert('Please add the name of the title, the director and the release year, before adding to the movie list');
     }
 
   }); // END of add button
@@ -159,7 +174,7 @@ function everything(event) {
       data[x].key = x;
       dataList.push(data[x])
     }
-  //  console.log(dataList);
+    //  console.log(dataList);
     // Default sort
     dataList.sort(function(a, b) {
       if (a.title < b.title) return -1;
@@ -341,15 +356,18 @@ function everything(event) {
             movieObject.director = changedDirector.value.toLowerCase();
           }
           if (changedYear.value != "") {
-            movieObject.year = changedYear.value;
+            let yearVal = changedYear.value;
+            yearVal = checkNumberFieldLength(yearVal);
+
+            movieObject.year = yearVal;
           }
 
           movieObject.raiting = rateTwo.value;
 
           if (changedMovImg.value != "") {
             movieObject.img = changedMovImg.value;
-          }else {
-            movieObject.img =  "img/movie-logo.jpg";
+          } else {
+            movieObject.img = "img/movie-logo.jpg";
           }
 
 
