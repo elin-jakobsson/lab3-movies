@@ -19,11 +19,12 @@
     <nav class="navbar">
       <ul class="ulNav">
         <li class="liImg"> <img src="img/Film-Camera-Logo-1.png" alt="movie logo"> </li>
-        <li class="liSearch"><form class="searchForm">
-          <input id="inputSearch" type="text" placeholder="Search.." name="search">
-          <p id="searchBtn"><i class="fas fa-search fa-2x" data-fa-transform=" up-1.5"></i></p>
-        </form>
-      </li>
+        <li class="liSearch">
+          <form class="searchForm">
+            <input id="inputSearch" type="text" placeholder="Search.." name="search">
+            <p id="searchBtn"><i class="fas fa-search fa-2x" data-fa-transform=" up-1.5"></i></p>
+          </form>
+        </li>
       </ul>
     </nav>
   </header>
@@ -32,54 +33,72 @@
 
     <div class="main-container">
 
-      <div class="add-sort">
-        <div class="addMovie">
-          <div class="addLabel">
-            <h3>Add Movie</h3>
-          </div>
-          <form class="sendForm">
-            <label for="titel">Title</label>
-            <input id="movTitle" type="text" name="titel" value="">
-            <label for="director">Director</label>
-            <input id="movDirector" type="text" name="director" value="">
-            <label for="year">Year of premiere</label>
-            <input id="movYear" type="number" min='1' max="5000" name="" value="">
-            <div class="slidecontainer">
-              <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
-              <p>Value: <span id="demo"></span></p>
-            </div>
-            <label for="image">Movie poster <em>Optional</em> </label>
-            <input id="movSrc" type="text" name="" value="">
-          </form>
-          <div class="submitDiv">
-            <button id="clear" type="button" name="button">Clear</button>
-            <button id="addBtn" type="button" name="button">Add</button>
-          </div>
+
+      <div class="addMovie">
+        <div class="addLabel">
+          <h3>Add Movie</h3>
         </div>
-
-        <div class="sort">
-          <div class="sortLabel">
-            <h3>Sort by:</h3>
+        <form class="sendForm">
+          <label for="titel">Title</label>
+          <input id="movTitle" type="text" name="titel" value="">
+          <label for="director">Director</label>
+          <input id="movDirector" type="text" name="director" value="">
+          <label for="year">Year of premiere</label>
+          <input id="movYear" type="number" min='1' max="5000" name="" value="">
+          <div class="slidecontainer">
+            <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
+            <p>Value: <span id="demo"></span></p>
           </div>
-          <label for="title-a-b">Title A-Ö</label>
-          <input id="title-a-b" checked="checked" type="radio" name="sort">
-          <label for="title-b-a">Title Ö-A</label>
-          <input id="title-b-a" type="radio" name="sort">
-        
-          <label for="direct-a-b">Director A-Ö</label>
-          <input id="direct-a-b" type="radio" name="sort" >
-          <label for="direct-b-a">Director Ö-A</label>
-          <input id="direct-b-a" type="radio" name="sort">
-
-          <label for="new">New</label>
-          <input id="new" type="radio" name="sort">
-          <label for="old">Old</label>
-          <input id="old" type="radio" name="sort">
+          <label for="image">Movie poster <em>Optional</em> </label>
+          <input id="movSrc" type="text" name="" value="">
+        </form>
+        <div class="submitDiv">
+          <button id="clear" type="button" name="button">Clear</button>
+          <button id="addBtn" type="button" name="button">Add</button>
         </div>
       </div>
 
 
+
       <div class="result">
+        <div class="sort">
+          <div class="sortLabel">
+            <h3>Sort by:</h3>
+          </div>
+          <form class="sort-form">
+            <span>
+              <label for="title-a-b">Title A-Z</label>
+              <input id="title-a-b" checked="checked" type="radio" name="sort">
+            </span>
+            <span>
+              <label for="title-b-a">Title Z-A</label>
+              <input id="title-b-a" type="radio" name="sort">
+            </span>
+
+            <span class="line"> | </span>
+
+            <span>
+              <label for="direct-a-b">Director A-Z</label>
+              <input id="direct-a-b" type="radio" name="sort">
+            </span>
+            <span>
+              <label for="direct-b-a">Director Z-A</label>
+              <input id="direct-b-a" type="radio" name="sort">
+            </span>
+
+            <span class="line"> | </span>
+
+            <span>
+              <label for="new">New</label>
+              <input id="new" type="radio" name="sort">
+            </span>
+            <span>
+              <label for="old">Old</label>
+              <input id="old" type="radio" name="sort">
+            </span>
+          </form>
+        </div>
+
         <div id="movieDisplay">
 
 

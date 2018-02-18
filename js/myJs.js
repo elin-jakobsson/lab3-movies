@@ -15,7 +15,7 @@ function everything(event) {
   //Firebase conection
   let db = firebase.database();
 
-  var offline;
+  //var offline;
   let data;
   let dataList = [];
   let objDeleteId;
@@ -59,29 +59,39 @@ function everything(event) {
 
   //add a movie to the database
   addBtn.addEventListener('click', function(event) {
-    movieObject.title = titleInput.value.toLowerCase();
-    movieObject.director = director.value.toLowerCase();
-    movieObject.year = year.value;
-    movieObject.raiting = raiting.value;
+    movieObject;
+    if (titleInput.value.length > 0 && director.value.length > 0 && year.value.length > 0) {
+      movieObject.title = titleInput.value.toLowerCase();
+      movieObject.director = director.value.toLowerCase();
+      movieObject.year = year.value;
 
-    if (movImg.value.length > 1) {
-      movieObject.img = movImg.value;
+      movieObject.raiting = raiting.value;
+
+      if (movImg.value != "") {
+        movieObject.img = movImg.value;
+      }else {
+        movieObject.img =  "img/movie-logo.jpg";
+      }
+
+      db.ref('/movies').push(movieObject, function(error) {
+        if (error) {
+          //  alert('The Movie didnt save, please try again');
+        } else {
+          //  alert('Data saved successfully')
+          titleInput.value = '';
+          director.value = '';
+          year.value = '';
+          movImg.value = '';
+          raiting.value = 50;
+          raitingVal.innerHTML = 50;
+        }
+      });
+    } else {
+      alert('Please add a the name of the title, the director and relase date, before adding to the movie list');
+
     }
 
-    db.ref('/movies').push(movieObject, function(error) {
-      if (error) {
-        alert('The Movie didnt save, please try again');
-      } else {
-        alert('Data saved successfully')
-        titleInput.value = '';
-        director.value = '';
-        year.value = '';
-        movImg.value = '';
-        raiting.value = 50;
-        raitingVal.innerHTML = 50;
-      }
-    });
-  });
+  }); // END of add button
 
   // Clear If regreat add witout send
   clear.addEventListener('click', function(event) {
@@ -94,34 +104,7 @@ function everything(event) {
   });
 
 
-  db.ref('/movies').once('value', function(snapshot) {
-    data = snapshot.val();
-
-    dataList = [];
-    for (let x in data) {
-      //  console.log(x);
-      data[x].key = x;
-      dataList.push(data[x])
-    }
-
-    //console.log('list is ',dataList);
-    dataList.sort(function(a, b) {
-      if (a.title < b.title) return -1;
-      if (a.title > b.title) return 1;
-      return 0;
-    });
-
-    print(dataList);
-
-  });
-
-  db.ref('/movies').on('child_added', function(snapshot) {
-
-    let child = snapshot.val();
-    let key = snapshot.key;
-    child.key = key;
-    dataList.push(child);
-
+  function mySort(dataList) {
     if (document.getElementById('title-a-b').checked) {
       dataList.sort(function(a, b) {
         if (a.title < b.title) return -1;
@@ -136,7 +119,6 @@ function everything(event) {
         return 0;
       });
     }
-
     if (document.getElementById('direct-a-b').checked) {
       dataList.sort(function(a, b) {
         if (a.director < b.director) return -1;
@@ -151,20 +133,65 @@ function everything(event) {
         return 0;
       });
     }
+    if (document.getElementById('new').checked) {
+      dataList.sort(function(a, b) {
+        if (a.year < b.year) return 1;
+        if (a.year > b.year) return -1;
+        return 0;
+      });
+    }
+    if (document.getElementById('old').checked) {
+      dataList.sort(function(a, b) {
+        if (a.year < b.year) return -1;
+        if (a.year > b.year) return 1;
+        return 0;
+      });
+    }
+  }
+
+  // ON WINDOW LOAD
+  db.ref('/movies').once('value', function(snapshot) {
+    data = snapshot.val();
+    //console.log(data);
+    // Loop trough firebase object that exist in the begining
+    dataList = [];
+    for (let x in data) {
+      data[x].key = x;
+      dataList.push(data[x])
+    }
+  //  console.log(dataList);
+    // Default sort
+    dataList.sort(function(a, b) {
+      if (a.title < b.title) return -1;
+      if (a.title > b.title) return 1;
+      return 0;
+    });
 
     print(dataList);
-
   });
 
+  // ON CHILD ADDED
+  db.ref('/movies').on('child_added', function(snapshot) {
 
-  offline;
+    let child = snapshot.val();
+    let key = snapshot.key;
+    child.key = key;
+    dataList.push(child);
 
+    mySort(dataList);
+    print(dataList);
+
+  }); // end of child added
+
+
+  // SORT Listeners
   document.getElementById('title-a-b').addEventListener('click', function() {
     dataList.sort(function(a, b) {
       if (a.title < b.title) return -1;
       if (a.title > b.title) return 1;
       return 0;
     });
+    page = 1;
     print(dataList);
   });
 
@@ -174,6 +201,7 @@ function everything(event) {
       if (a.title > b.title) return -1;
       return 0;
     });
+    page = 1;
     print(dataList);
   });
 
@@ -183,38 +211,61 @@ function everything(event) {
       if (a.director > b.director) return 1;
       return 0;
     });
+    page = 1;
     print(dataList);
   });
 
   document.getElementById('direct-b-a').addEventListener('click', function() {
+
     dataList.sort(function(a, b) {
       if (a.director < b.director) return 1;
       if (a.director > b.director) return -1;
       return 0;
     });
+    page = 1;
+    print(dataList);
+  });
+  document.getElementById('new').addEventListener('click', function() {
+    dataList.sort(function(a, b) {
+      if (a.year < b.year) return 1;
+      if (a.year > b.year) return -1;
+      return 0;
+    });
+    page = 1;
+    print(dataList);
+  });
+  document.getElementById('old').addEventListener('click', function() {
+    dataList.sort(function(a, b) {
+      if (a.year < b.year) return -1;
+      if (a.year > b.year) return 1;
+      return 0;
+    });
+    page = 1;
     print(dataList);
   });
 
+
+  // PRINT FUNCTION
   function print(data) {
-    data;
+    //console.log('datalist beginning of print ', dataList.length);
     let newData = pagination(data);
     document.getElementById('movieDisplay').innerHTML = '';
+
+    // START PRINT
     for (let z in newData) {
-      //console.log(dataList[key]);
       let obj = newData[z];
-      //console.log(obj.director);
 
       let div = document.createElement('div');
       div.id = obj.key;
       div.className = 'movieItem';
       div.innerHTML = `
-    <img src=${obj.img} alt="movie image of ${obj.title}" >
+      <img src=${obj.img} alt="movie image of ${obj.title}" >
       <div class='item1'>
         <ul class='ul-movitem'>
             <li class='li-title'>${obj.title}</li>
-            <li>(${obj.year})</li>
-            <li>Director: ${obj.director}</li>
-            <li>Raiting: ${obj.raiting}/100</li>
+            <li class='li-year'>(${obj.year})</li>
+            <li class='li-direct'><span>Director:</span> ${obj.director}</li>
+            <li class='li-rait'> ${obj.raiting}/100</li>
         </ul>
         <div class='item2'>
         <button class='changeBtn' type="button" name="button">Change</button>
@@ -222,141 +273,192 @@ function everything(event) {
         </div>
       </div> `;
 
-
       let changeBtn = div.getElementsByTagName('button')[0];
       let deleteBtn = div.getElementsByTagName('button')[1];
 
+      // CHANGE BUTTON
       changeBtn.addEventListener('click', function(event) {
         let objId = event.target.parentElement.parentElement.parentElement.id
         let divItem = document.getElementById(objId);
 
-        //document.getElementsByClassName('changeMovie')[0].style.display= 'block';
-
-
+        // CHANGE HTML Object
+        divItem.className = 'changeItem';
         divItem.innerHTML = `<form class='changeInput'>
+        <h3>Input a diffrent movie</h3>
+        <br>
         <label for="title">Title</label>
-        <input type="text" name="title" value="">
+        <input id='changeTitle' type="text" name="title" value="">
         <label for="direct">Director</label>
-        <input type="text" name="direct" value="">
+        <input id='changeDirect' type="text" name="direct" value="">
         <label for="year">Year</label>
-        <input id="movYear" type="number" min='1' max="5000" name="" value="">
+        <input id="changeYear" type="number" min='1' max="5000" name="" value="">
         <div class="slidecontainerTwo">
-          <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
-          <p>Value: <span id="demo"></span></p>
+          <input type="range" min="0" max="100" value="50" class="slider" id="myRangeTwo">
+          <p>Value: <span id="demoTwo">50</span></p>
         </div>
         <label for="image">Movie poster <em>Optional</em> </label>
-        <input id="movSrc" type="text" name="" value="">
-        </form>
+        <input id="changeSrc" type="text" name="" value="">
         <div class="saveDiv">
-          <button  type="button" name="button">Go back</button>
-          <button  type="button" name="button">Add</button>
+        <button class='goback' type="button" name="button">Go back</button>
+        <button class='addChange' type="button" name="button">Save</button>
         </div>
-        `
+        </form>
+        `;
+
+        //SLIDER in CHANGE
+        let rateTwo = document.getElementById("myRangeTwo");
+        let rateTwoVal = document.getElementById("demoTwo");
+        rateTwoVal.innerHTML = rateTwo.value;
+
+        rateTwo.addEventListener("input", function(event) {
+          rateTwoVal.innerHTML = this.value;
+        });
+
         let goBackBtn = div.getElementsByTagName('button')[0];
         let saveBtn = div.getElementsByTagName('button')[1];
 
-        goBackBtn.addEventListener('click', function(event){
-          console.log(event.target.parentElement.parentElement.id);
-        });
-        saveBtn.addEventListener('click', function(event){
-          console.log(event.target.parentElement.parentElement.id);
+        //GO BACK BUTTON in Change
+        goBackBtn.addEventListener('click', function(event) {
+          //  console.log(event.target.parentElement.parentElement.id);
+          print(dataList);
         });
 
+        //SAVE BUTTON in Change
+        saveBtn.addEventListener('click', function(event) {
 
-        console.log(objId);
+          let saveId = event.target.parentElement.parentElement.parentElement.id;
+          movieObject;
+          let changedTitle = document.getElementById('changeTitle');
+          let changedDirector = document.getElementById('changeDirect');
+          let changedYear = document.getElementById('changeYear');
+          let changedMovImg = document.getElementById('changeSrc')
+          //  console.log(changedTitle);
+
+          if (changedTitle.value != "") {
+            movieObject.title = changedTitle.value.toLowerCase();
+          }
+          if (changedDirector.value != "") {
+            movieObject.director = changedDirector.value.toLowerCase();
+          }
+          if (changedYear.value != "") {
+            movieObject.year = changedYear.value;
+          }
+
+          movieObject.raiting = rateTwo.value;
+
+          if (changedMovImg.value != "") {
+            movieObject.img = changedMovImg.value;
+          }else {
+            movieObject.img =  "img/movie-logo.jpg";
+          }
+          
+
+          db.ref('/movies/' + saveId).set(movieObject, function(error) {
+            if (error) {
+              //  alert('The Movie didnt save, please try again');
+            } else {
+              //  alert('Data saved successfully')
+
+            }
+          });
+
+          let change = dataList.filter(function(el) {
+            return el.key !== changedkey;
+          })
+
+          dataList = change;
+          childChanged.key = changedkey;
+          dataList.push(childChanged);
+
+          mySort(dataList);
+          print(dataList);
+
+        });
+
       });
-
 
       deleteBtn.addEventListener('click', function(event) {
         objDeleteId = event.target.parentElement.parentElement.parentElement.id
         data;
         let itemRemoved;
-
         itemRemoved = data.filter(function(el) {
           return el.key !== objDeleteId;
         });
-
-        data = itemRemoved;
-        print(data);
-
+        //  console.log(itemRemoved);
+        dataList = itemRemoved;
+        print(dataList);
         db.ref('/movies/' + objDeleteId).remove();
-
       });
-
 
       document.getElementById('movieDisplay').appendChild(div);
     }
+    //console.log('datalist ending of print ', dataList.length);
+  } // END of function print
 
 
 
+  // Child-changed
+  var childChanged;
+  var changedkey;
+  db.ref('/movies/').on('child_changed', function(snapshot) {
 
-  }
+    childChanged = snapshot.val();
 
-  /*function findSpecific(data) {
-    if (data.key.includes(objDeleteId, 0)) {
-      return data;
-    }
-  }*/
+    changedkey = snapshot.key;
+    /*  let change = dataList.filter(function(el){
+        return el.key !== changedkey;
+      })
 
+      dataList = change;
+      childChanged.key = changedkey;
+      dataList.push(childChanged);
+
+      print(dataList);*/
+
+  });
+
+
+  //Pagination Listeners
   document.getElementById('next').addEventListener('click', function(event) {
     if (page < pages && page > 0) {
-      // data
       page += 1;
-      //pagination(data)
-      //console.log(page);
       dataList;
-      //  console.log(dataList);
+
       print(dataList);
     } else {
-      //console.log(page);
-      //console.log('didnt work');
-      document.getElementById('next').disabled;
-      document.getElementById('next').style.color = 'gray';
+      //document.getElementById('next').disabled;
+      //document.getElementById('next').style.color = 'gray';
     }
   });
 
   document.getElementById('previous').addEventListener('click', function(event) {
     if (page >= pages || page < pages && page != 1) {
       page -= 1;
-      //console.log(page);
       dataList;
-      //  console.log(dataList);
       print(dataList);
     } else {
-      //console.log(page);
-      //  console.log('didnt work');
-
+      //document.getElementById('previous').disabled;
+      //document.getElementById('previous').style.color = 'gray';
     }
   });
 
   // Pagination
   function pagination(data) {
-
-    // Default
-
     // sid 1: 0 1 2 3
     //sid 2: 4 5 6 7
     let slicestart = (page - 1) * itemsPerPage;
     let slice = data.slice(slicestart, slicestart + itemsPerPage);
 
-    //  console.log(slice);
-    //p==1 listitems 0*4=0  - 4
-    //p==2 1*4=4
-
     pages = Math.ceil(data.length / itemsPerPage);
     document.getElementById('allPages').innerText = pages;
     document.getElementById('onPage').innerText = page;
 
-    //console.log('slice is', slice);
     return slice;
-    //Filter alla som har den här nyckeln visas
-
   }
 
 
   //Search form
   let search = document.getElementById('inputSearch');
-  //let searchBtn = document.getElementById('searchBtn');
 
   search.addEventListener('keyup', function(event) {
     searchVal = event.target.value.toLowerCase();
@@ -372,6 +474,7 @@ function everything(event) {
       print(dataList);
     }
   });
+
   // Prevent enter submit in filter
   search.addEventListener('keydown', function(event) {
     if (event.keyCode === 13) {
@@ -381,9 +484,8 @@ function everything(event) {
   });
 
 
+  // FIND FUNCTION for filter
   function find(data) {
-    //  console.log(search.value);
-
     if (data.title.includes(search.value, 0)) {
       return data;
     }
@@ -394,8 +496,6 @@ function everything(event) {
       return data;
     }
   }
-
-
 
 
 } // END of Everything

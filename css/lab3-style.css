@@ -16,7 +16,6 @@ header {
   width: 100%
 }
 
-
 .ulNav {
   width: 100%;
   list-style: none;
@@ -30,13 +29,16 @@ header {
   padding-right: 1.5rem;
   color: #fff;
 }
-.ulNav img{
+
+.ulNav img {
   width: 80px;
 }
-.liImg{
+
+.liImg {
   width: 20%;
 }
-.liSearch{
+
+.liSearch {
   width: 70%;
 }
 
@@ -52,26 +54,28 @@ main {
   justify-content: space-between;
 }
 
-.add-sort{
+/*.add-sort{
   width: 25%;
   min-width: 200px;
 
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-}
+}*/
+
 .sort {
   width: 100%;
-  margin-top: 1rem;
   background-color: #fff;
 }
-.sort>*{
+
+.sort>* {
   padding: 1rem 0.5rem;
 }
 
 .addMovie {
-
-
+  width: 25%;
+  min-width: 200px;
+  max-height: 400px;
   border: 3px solid #01d277;
 }
 
@@ -79,18 +83,38 @@ main {
   background-color: #01d277;
   padding: 10px;
   width: 100%;
-
 }
+
+.sort-form span.line {
+  padding: 0 1rem;
+}
+
+#title-a-b, #title-b-a, #direct-a-b, #direct-b-a, #new, #old {
+  margin-right: 1rem;
+}
+
 .sortLabel {
   background-color: #01d277;
   padding: 10px;
   width: 100%;
-
 }
 
 .sendForm {
   background-color: #fff;
   padding: 1rem;
+}
+
+#addBtn {
+  border: none;
+  height: 30px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #01d277;
+  transition: 0.4s;
+}
+
+#addBtn:hover {
+  background-color: springgreen;
 }
 
 .sendForm>* {
@@ -99,15 +123,81 @@ main {
   margin: auto;
 }
 
-/*.changeMovie{
-  z-index: 20;
-  position: fixed;
-  display: none;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
+#clear {
+  border: none;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  transition: 0.4s;
+}
 
-}*/
+#clear:hover {
+  background-color: gray;
+}
+
+.changeItem {
+  background-color: #fff;
+  box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.3);
+  height: 200px;
+  margin: 0 0 1rem 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 45%;
+}
+
+.changeInput {
+  background-color: #fff;
+  padding: 1rem;
+  width: 100%;
+  height: 300px;
+}
+
+.changeInput>* {
+  width: 100%;
+  display: block;
+  margin: auto;
+}
+
+.saveDiv {
+  padding: 1rem 0 1rem 1rem;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.saveDiv>* {
+  margin-left: 2rem;
+}
+
+.goback {
+  border: none;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  transition: 0.4s;
+}
+
+.goback:hover {
+  background-color: gray;
+}
+
+.addChange {
+  border: none;
+  height: 30px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #01d277;
+  transition: 0.4s;
+}
+
+.addChange:hover {
+  background-color: springgreen;
+}
 
 /*Slider*/
 
@@ -155,13 +245,14 @@ main {
 }
 
 /* Slider 2*/
-.slidecontainerTwo {
-  width: 90%;
 
+.slidecontainerTwo {
+  width: 100%;
+  margin: 1.5rem 0;
 }
 
 .slidecontainerTwo>p {
-
+  margin-top: 1rem;
 }
 
 /*End of slider*/
@@ -180,7 +271,6 @@ main {
 
 .searchForm {
   width: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -202,18 +292,16 @@ main {
   background-color: #fff;
   border-radius: 0 5px 5px 0;
   border: none;
-  color:#01d277;
+  color: #01d277;
   display: flex;
   align-content: center;
   justify-content: center;
 }
 
-
 #movieDisplay {
-
   background-color: #f4f4f4;
   min-height: 350px;
-
+  margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -223,43 +311,68 @@ main {
 .movieItem {
   box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.3);
   height: 200px;
-
+  max-height: 200px;
   flex-basis: 45%;
+
   margin: 0 0 1rem 0;
+
   display: flex;
   flex-direction: row;
 }
 
 .movieItem>img {
   width: 130px;
+
 }
 
 .ul-movitem {
   list-style: none;
+  overflow: auto;
 }
 
-.closeBtn {}
-
 .item1 {
+  word-wrap: break-word;
   background-color: #fff;
   height: 200px;
   width: 100%;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
-
   display: flex;
   flex-direction: column;
-
   justify-content: space-between;
 }
 
-.li-title{
+.li-title {
+  word-wrap: break-word;
   font-family: Tahoma, sans-serif;
   text-transform: capitalize;
   font-size: 1.1rem;
   padding-bottom: 0.4rem;
 }
 
+.li-year {
+  font-size: 14px;
+}
+
+.li-direct span {
+  display: block;
+  margin-top: 1rem;
+  font-style: italic;
+  font-size: 13px;
+}
+
+.li-direct {
+  word-wrap: break-word;
+  font-family: Tahoma, sans-serif;
+  text-transform: capitalize;
+}
+
+.li-rait {
+  margin-top: 1rem;
+  font-size: 13px;
+}
+
 .item2 {
+  margin-top: 1rem;
   align-self: baseline;
   width: 100%;
   display: flex;
@@ -269,29 +382,30 @@ main {
 .item2>button {
   margin-right: 1rem;
 }
-.changeBtn{
+
+.changeBtn {
   border: none;
   padding: 5px;
   border-radius: 5px;
   background-color: gold;
   transition: 0.4s;
 }
-.changeBtn:hover{
-  background-color: orange;
 
+.changeBtn:hover {
+  background-color: orange;
 }
-.closeBtn{
+
+.closeBtn {
   border: none;
-  padding:  5px;
+  padding: 5px;
   border-radius: 5px;
   background-color: red;
   transition: 0.4s;
 }
-.closeBtn:hover{
-  background-color: pink;
 
+.closeBtn:hover {
+  background-color: pink;
 }
-/*Paginering Css*/
 
 /* Pagination links */
 
@@ -309,35 +423,32 @@ main {
   text-decoration: none;
   transition: 0.3s;
 }
+
 .pagination a:hover {
   background-color: #01d277;
   color: #fff;
-
 }
 
 .pagination p {
   padding: 4px 16px;
 }
 
-/* Style the active/current link */
-
-/*.pagination a.active {
-  background-color: #4CAF50;
-  color: white;
-}*/
-
-/* Add a grey background color on mouse-over */
-
-/*.pagination a:hover:not(.active) {
-  background-color: #ddd;
-}*/
-
 @media screen and (max-width:1038px) {
+  .sort-form span {
+    display: block;
+    padding: 0 0 1rem 4px;
+  }
+  .sort-form span.line {
+    display: none;
+  }
   #movieDisplay {
     justify-content: center;
   }
+  .changeItem {
+    flex-basis: 80%;
+  }
   .movieItem {
-    flex-basis: 60%
+    flex-basis: 80%;
   }
 }
 
@@ -346,14 +457,9 @@ main {
     flex-direction: column;
     justify-content: space-between;
   }
-  .add-sort{
-    width: 100%;
-  }
   .addMovie {
     width: 100%;
-
   }
-
   .result {
     width: 100%;
     margin-top: 1rem;
