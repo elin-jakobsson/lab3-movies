@@ -410,7 +410,7 @@ function everything(event) {
 
       document.getElementById('movieDisplay').appendChild(div);
     }
-    //console.log('datalist ending of print ', dataList.length);
+
   } // END of function print
 
 
@@ -477,9 +477,10 @@ function everything(event) {
 
   //Search form
   let search = document.getElementById('inputSearch');
-
+  let searchVal;
   search.addEventListener('keyup', function(event) {
     searchVal = event.target.value.toLowerCase();
+  //  console.log(searchVal);
     dataList;
     let filterlist;
 
@@ -504,13 +505,13 @@ function everything(event) {
 
   // FIND FUNCTION for filter
   function find(data) {
-    if (data.title.includes(search.value, 0)) {
+    if (data.title.includes(searchVal, 0)) {
       return data;
     }
-    if (data.director.includes(search.value, 0)) {
+    if (data.director.includes(searchVal, 0)) {
       return data;
     }
-    if (data.year.includes(search.value, 0)) {
+    if (data.year.includes(searchVal, 0)) {
       return data;
     }
   }
