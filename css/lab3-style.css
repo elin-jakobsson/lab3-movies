@@ -75,7 +75,8 @@ main {
 .addMovie {
   width: 25%;
   min-width: 200px;
-  max-height: 400px;
+  max-height: 460px;
+  background-color: #fff;
   border: 3px solid #01d277;
 }
 
@@ -104,6 +105,8 @@ main {
   padding: 1rem;
 }
 
+
+
 #addBtn {
   border: none;
   height: 30px;
@@ -121,6 +124,16 @@ main {
   width: 100%;
   display: block;
   margin: auto;
+  margin-bottom: 1rem;
+}
+.sendSpan>*{
+  width: 100%;
+  display: block;
+}
+.sendSpan>label>span{
+  padding-left: 2rem;
+  font-style: italic;
+  font-size: 13px;
 }
 
 #clear {
@@ -313,7 +326,8 @@ main {
   height: 200px;
   max-height: 200px;
   flex-basis: 45%;
-
+  overflow-y: hidden;
+  overflow-x: auto;
   margin: 0 0 1rem 0;
 
   display: flex;

@@ -87,7 +87,7 @@ function everything(event) {
         }
       });
     } else {
-      alert('Please add a the name of the title, the director and relase date, before adding to the movie list');
+      alert('Please add the name of the title, the director and the relase date, before adding to the movie list');
 
     }
 
@@ -351,7 +351,7 @@ function everything(event) {
           }else {
             movieObject.img =  "img/movie-logo.jpg";
           }
-          
+
 
           db.ref('/movies/' + saveId).set(movieObject, function(error) {
             if (error) {
