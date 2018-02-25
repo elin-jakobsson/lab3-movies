@@ -438,6 +438,7 @@ function everything(event) {
 
   //Pagination Listeners
   document.getElementById('next').addEventListener('click', function(event) {
+    event.preventDefault();
     if (page < pages && page > 0) {
       page += 1;
       dataList;
@@ -450,6 +451,7 @@ function everything(event) {
   });
 
   document.getElementById('previous').addEventListener('click', function(event) {
+    event.preventDefault();
     if (page >= pages || page < pages && page != 1) {
       page -= 1;
       dataList;
